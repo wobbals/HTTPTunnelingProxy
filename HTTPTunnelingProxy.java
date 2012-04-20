@@ -255,9 +255,9 @@ public class HTTPTunnelingProxy implements Runnable {
     private void attemptUncoupledWrite(SelectionKey key) {
         try {
             SocketChannel channel = (SocketChannel)key.channel();
-            ByteBuffer buffer = (ByteBuffer)key.attachment();
-            if (buffer != null) {
-                buffer.flip();
+	    if (key.attachment() != null && key.attachment() instanceof ByteBuffer) {
+		ByteBuffer buffer = (ByteBuffer)key.attachment();
+		buffer.flip();
                 channel.write(buffer);
                 key.attach(null);
                 returnByteBuffer(buffer);
